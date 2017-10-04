@@ -6,7 +6,11 @@ const cookieParser = require('cookie-parser');
 const bodyParser   = require('body-parser');
 const layouts      = require('express-ejs-layouts');
 const mongoose     = require('mongoose');
+const cors         = require('cors');
+const passport     = require('passport');
+const session      = require('express-session');
 
+require('./config/passport-config');
 
 mongoose.connect('mongodb://localhost/finalproject-express');
 
@@ -27,10 +31,30 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(layouts);
+app.use(
+  cors({
+    credentials: true,
+    origin: ['http://localhost:4200']
+}));
+app.use(
+  session({
+    secret: 'final project anxiety',
+    resave: true,
+    saveUninitialized: true
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+//========VV====== ROUTES GO HERE ========VV====================================
 
 const index = require('./routes/index');
 app.use('/', index);
 
+const myAuthRoutes = require('./routes/auth-api-router');
+app.use('/api', myAuthRoutes);
+
+//=======^^======= ROUTES GO HERE ========^^====================================
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   const err = new Error('Not Found');
