@@ -8,12 +8,14 @@ const router = express.Router();
 
 
 router.post('/process-signup', (req, res, next) => {
+
   if(!req.body.signupFirstName   ||
      !req.body.signupLastName    ||
      !req.body.signupEmail       ||
      !req.body.signupPassword) {
        res.status(400).json({ errorMessage: 'We need you to fill in all fields'}
      );
+
      return;
      }
 
@@ -27,11 +29,11 @@ router.post('/process-signup', (req, res, next) => {
           }
 
           if (userFromDb) {
-              res.stauts(400).json({ errorMessage: 'A user with that email already exists'});
+              res.status(400).json({ errorMessage: 'A user with that email already exists'});
               return;
           }
 
-          const salt = bcrypt.genSalt(10);
+          const salt = bcrypt.genSaltSync(10);
           const hashPass = bcrypt.hashSync(req.body.signupPassword, salt);
 
           const theUser = new UserModel({

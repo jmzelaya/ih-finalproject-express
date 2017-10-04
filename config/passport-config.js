@@ -23,3 +23,46 @@ passport.deserializeUser((idFromSession, done) =>{
     }
   );//CLOSE "UserModel.findById(...)"
 });//CLOSE "passport.deserializeUser(...)"
+
+//==============================================================================
+//                      ****LOCAL STRATEGY****
+//==============================================================================
+
+
+passport.use(
+  new LocalStrategy(
+    {
+      usernameField: 'loginUsername',
+      passwordField: 'loginPassword'
+    },
+
+    (sentUsername, sentPassword, done) => {
+      UserModel.findOne(
+        { userName: sentUsername },
+        (err, userFromDb) => {
+            if (err) {
+                done(err);
+                return;
+            }
+
+            if (!userFromDb) {
+                //"false" tells Passport that the login failed
+                done(null, false, { message: 'Bad username 🤢' });
+                return;
+            }
+
+            const isPasswordGood =
+                bcrypt.compareSync(sentPassword, userFromDb.encryptedPassword);
+
+            if (!isPasswordGood) {
+                done(null,false, { message: 'Bad password 🤢 '});
+                return;
+            }
+            // if we get here, log in was successful
+            // make "userFromDb" the logged in user
+            done(null, userFromDb);
+      }
+    );//UserModel.findOne(...)
+}
+  )//CLOSE "new LocalStrategy(...)"
+);//CLOSE "passport.use(...)"
