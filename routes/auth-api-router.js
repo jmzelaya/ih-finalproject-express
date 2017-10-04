@@ -58,3 +58,6 @@ router.post('/process-signup', (req, res, next) => {
      );//CLOSE "UserModel.findOne(...)"
 
 });//CLOSE "router.POST(...)"
+
+
+module.exports = router;
