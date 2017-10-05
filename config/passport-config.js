@@ -38,31 +38,33 @@ passport.use(
 
     (sentUsername, sentPassword, done) => {
       UserModel.findOne(
-        { userName: sentUsername },
+        { email: sentUsername },
+
         (err, userFromDb) => {
             if (err) {
                 done(err);
                 return;
             }
 
-            if (!userFromDb) {
+            if (userFromDb === null) {
                 //"false" tells Passport that the login failed
-                done(null, false, { message: 'Bad username 🤢' });
+                done(null, false, { message: 'Your email is incorrect.' });
                 return;
             }
 
             const isPasswordGood =
-                bcrypt.compareSync(sentPassword, userFromDb.encryptedPassword);
+              bcrypt.compareSync(sentPassword, userFromDb.encryptedPassword);
 
             if (!isPasswordGood) {
                 done(null,false, { message: 'Bad password 🤢 '});
                 return;
+
             }
             // if we get here, log in was successful
             // make "userFromDb" the logged in user
             done(null, userFromDb);
       }
     );//UserModel.findOne(...)
-}
+   }
   )//CLOSE "new LocalStrategy(...)"
 );//CLOSE "passport.use(...)"

@@ -50,16 +50,69 @@ router.post('/process-signup', (req, res, next) => {
                  return;
               }
 
-
               theUser.encryptedPassword = undefined;
               res.status(200).json( theUser );
+              console.log("User successfully signed up");
 
           });//CLOSE "theUser.save(...)"
 
        }
      );//CLOSE "UserModel.findOne(...)"
 
-});//CLOSE "router.POST(...)"
+});//CLOSE "router.POST('process-signup')"
 
+
+router.post('/process-login', (req, res, next) => {
+  const myCustomAuth =
+    passport.authenticate('local', (err, theUser, extraInfo) => {
+      if(err) {
+        res.status(500).json({ errorMessage: 'Login failed' });
+        return;
+      }
+
+      if(!theUser) {
+        res.status(400).json({ errorMessage: 'extraInfo.message'});
+        return;
+      }
+
+      req.login(theUser, (err) => {
+        if(err) {
+          res.status(500).json({ errorMessage: 'Login failed, please try again' });
+          return;
+        }
+
+        theUser.encryptedPassword = undefined;
+        res.status(200).json( theUser );
+        console.log('User successfully logged in 👍');
+      });
+    });//CLOSE "passport.authenticate('local')"
+
+    myCustomAuth(req, res, next);
+
+});//CLOSE "router.POST(''process-login)"
+
+router.get('/checklogin', (req, res, next) => {
+  let amILoggedIn = false;
+
+  if (req.user){
+      req.user.encryptedPassword = undefined;
+      amILoggedIn = true;
+  }
+
+  res.status(200).json(
+    {
+      isLoggedIn: amILoggedIn,
+      userInfo: req.user
+    }
+  );
+});//CLOSE "router.GET('checklogin')"
+
+
+
+router.delete('/logout', (req, res, next) => {
+    req.logout();
+    res.status(200).json({ successMessage: 'Logged out successfully' });
+    console.log('logged out!');
+});//CLOSE "router.delete('logout')"
 
 module.exports = router;
