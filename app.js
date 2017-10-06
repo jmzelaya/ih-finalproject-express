@@ -53,6 +53,9 @@ app.use('/', index);
 const myAuthRoutes = require('./routes/auth-api-router');
 app.use('/api', myAuthRoutes);
 
+const myPostRoutes = require('./routes/post-api-router');
+app.use('/api', myPostRoutes);
+
 //=======^^======= ROUTES GO HERE ========^^====================================
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

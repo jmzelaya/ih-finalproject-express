@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
+const PostModel = require('../models/posts-model');
+const ProductModel = require('../models/product.model');
 
 
 
@@ -24,7 +26,18 @@ const userSchema = new Schema(
     encryptedPassword: {
       type: String,
       required: [true, 'Please input your password']
-    }
+    },
+
+    allies: [ { type: String} ],
+
+    posts: [PostModel.schema],
+
+    daysSurvived: { type: Number },
+
+    daysMissing: { type: Number },
+
+    supplies: [ProductModel.schema]
+
   },
 
   {
