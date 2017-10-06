@@ -1,5 +1,6 @@
 const express = require('express');
 const PostModel = require('../models/posts-model');
+const UserModel = require('../models/user-model');
 const router = express.Router();
 
 
@@ -10,11 +11,14 @@ router.post('/posts', (req, res, next) => {
 
   const thePost = new PostModel({
     textContent: req.body.textContent,
-    author: req.user._id
+    author: req.user._id,
   });
 
-  console.log("text content -->", req.body.postText);
-  console.log("auther -->", req.user._id);
+  console.log('mooooo');
+  req.user.posts.push(thePost._id);
+  console.log("text content -->",req.user.posts);
+
+  console.log("author -->", req.user._id);
 
 
   thePost.save((err) => {
@@ -30,6 +34,7 @@ router.post('/posts', (req, res, next) => {
        console.log('ERROR POSTING THE POST', err);
        res.status(500).json({ errorMessage: 'Something went wrong try again later'});
     }
+
 
     res.status(200).json(thePost);
     console.log('Succesfully posted!');
@@ -106,8 +111,8 @@ router.delete(('/posts/:postId'), (req, res, next) => {
 
         res.status(200).json({'Post was successfully deleted': postFromDb});
       }
-    );
-  });
+    );//CLOSE "PostModel.findByIdAndRemove(...)"
+  });//CLOSE "PostModel.findById(...)"
 });//CLOSE "router.DELETE(/posts/:postId)"
 
 module.exports = router;

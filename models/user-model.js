@@ -28,9 +28,12 @@ const userSchema = new Schema(
       required: [true, 'Please input your password']
     },
 
-    allies: [ { type: String} ],
+    allies: [{
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      }],
 
-    posts: [PostModel.schema],
+    posts: [],
 
     daysSurvived: { type: Number },
 
