@@ -68,7 +68,46 @@ router.get('/myposts', (req, res, next) => {
            return;
           }
           res.status(200).json(myPostResults);
-    });
-});
+    });//CLOSE "PostModel.find(...)"
+});//CLOSE "router.GET('/myposts')"
+
+router.delete(('/posts/:postId'), (req, res, next) => {
+  if(!req.user){
+      res.status(401).json({ errorMessage: 'User is not logged in'});
+      return;
+  }
+
+  PostModel.findById(
+    req.params.postId,
+
+    (err, postFromDb) => {
+      if(err) {
+        res.status(500).json({ errorMessage: 'Phone details went wrong' }
+      );
+
+      return;
+
+      }
+
+      if(postFromDb.author.toString() !== req.user._id.toString()){
+
+         res.status(403).json({ errorMessage: 'You may only delete posts that belong to you.' });
+         return;
+    }
+
+    PostModel.findByIdAndRemove(
+      req.params.postId,
+      (err, postFromDb) => {
+        if(err) {
+          console.log('Delete post FAILED', err);
+          res.status(500).json({ errorMessage: 'The was an error deleting your post'});
+          return;
+        }
+
+        res.status(200).json({'Post was successfully deleted': postFromDb});
+      }
+    );
+  });
+});//CLOSE "router.DELETE(/posts/:postId)"
 
 module.exports = router;
