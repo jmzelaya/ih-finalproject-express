@@ -7,6 +7,7 @@ const UserModel   = require('../models/user-model');
 const router = express.Router();
 
 
+
 router.post('/process-signup', (req, res, next) => {
 
   if(!req.body.signupFirstName   ||
@@ -106,6 +107,12 @@ router.get('/checklogin', (req, res, next) => {
     }
   );
 });//CLOSE "router.GET('checklogin')"
+
+
+
+
+
+
 
 
 
