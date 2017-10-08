@@ -38,7 +38,6 @@ router.post('/users/allies/:id', (req, res, next) => {
           return;
         }
 
-  });
         UserModel.findById( req.params.id, (err, myAllyFromDb) =>{
             if(err){
               res.status(500).json({ errorMessage: 'Ally database error' });
@@ -67,8 +66,10 @@ router.post('/users/allies/:id', (req, res, next) => {
                 res.status(200).json(allyFromDb);
               });
 
-        }
-        );
+        });
+
+  });
+
         //Take the ally's id
         // req.params.id
         //put inside our ally's array
