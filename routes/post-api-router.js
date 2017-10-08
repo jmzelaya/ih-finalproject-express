@@ -1,7 +1,7 @@
-const express = require('express');
+const express   = require('express');
 const PostModel = require('../models/posts-model');
 const UserModel = require('../models/user-model');
-const router = express.Router();
+const router    = express.Router();
 
 
 router.post('/posts', (req, res, next) => {
@@ -15,7 +15,7 @@ router.post('/posts', (req, res, next) => {
   });
 
   console.log('mooooo');
-  req.user.posts.push(thePost._id);
+  // req.user.posts.push(thePost._id);
   console.log("text content -->",req.user.posts);
 
   console.log("author -->", req.user._id);

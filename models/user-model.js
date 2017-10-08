@@ -39,7 +39,10 @@ const userSchema = new Schema(
 
     daysMissing: { type: Number },
 
-    supplies: [ProductModel.schema]
+    supplies: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Product',
+      }]
 
   },
 

@@ -1,6 +1,5 @@
-const mongoose = require('mongoose');
-
-const Schema = mongoose.Schema;
+const mongoose  = require('mongoose');
+const Schema    = mongoose.Schema;
 
 
 const productSchema = new Schema (
@@ -17,12 +16,12 @@ const productSchema = new Schema (
 
     productValue:{
       type: String,
-      // required: [true, 'You must input a trade value']
+      required: [true, 'You must input a trade value']
     },
 
     tag: {
       type: String,
-      // required: [true, 'You must include one tag for your product']
+      required: [true, 'You must include one tag for your product']
     },
 
     owner: {

@@ -1,8 +1,8 @@
-const express = require('express');
+const express   = require('express');
 const UserModel = require('../models/user-model');
-const router = express.Router();
+const router    = express.Router();
 
-console.log('in ally router');
+
 
 router.post('/users/allies/:id', (req, res, next) => {
   console.log('hi');

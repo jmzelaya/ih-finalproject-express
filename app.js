@@ -59,6 +59,9 @@ app.use('/api', myPostRoutes);
 const myAllyRoutes = require('./routes/ally-api-router');
 app.use('/api', myAllyRoutes);
 
+const mySupplyRoutes = require('./routes/product-api-router');
+app.use('/api', mySupplyRoutes);
+
 //=======^^======= ROUTES GO HERE ========^^====================================
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
