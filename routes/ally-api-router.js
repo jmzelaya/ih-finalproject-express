@@ -38,7 +38,7 @@ router.post('/users/allies/:id', (req, res, next) => {
           return;
         }
 
-        UserModel.findById( req.params.id, (err, myAllyFromDb) =>{
+        UserModel.findById( req.user.id, (err, myAllyFromDb) =>{
             if(err){
               res.status(500).json({ errorMessage: 'Ally database error' });
             }
@@ -63,7 +63,7 @@ router.post('/users/allies/:id', (req, res, next) => {
                   res.status(500).json({ errorMessage: 'my ally save went wrong' });
                   return;
                 }
-                res.status(200).json(allyFromDb);
+                res.status(200).json(myAllyFromDb);
               });
 
         });
