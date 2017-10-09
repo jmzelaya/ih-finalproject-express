@@ -109,17 +109,14 @@ router.get('/checklogin', (req, res, next) => {
 });//CLOSE "router.GET('checklogin')"
 
 
-
-
-
-
-
-
-
 router.delete('/logout', (req, res, next) => {
     req.logout();
     res.status(200).json({ successMessage: 'Logged out successfully' });
     console.log('logged out!');
 });//CLOSE "router.delete('logout')"
+
+router.get('/users', (req, res, next) => {
+  UserModel.findBy();
+});
 
 module.exports = router;

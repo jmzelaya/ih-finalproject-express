@@ -115,4 +115,25 @@ router.delete(('/posts/:postId'), (req, res, next) => {
   });//CLOSE "PostModel.findById(...)"
 });//CLOSE "router.DELETE(/posts/:postId)"
 
+
+router.get('/posts/allies', (req, res, next) =>{
+  if(!req.user){
+    res.status(401).json({ errorMessage: 'User is not logged in' });
+    return;
+  }
+  
+  PostModel.findBy({ owner: allies })
+    .sort({ _id: -1})
+    .exec((err, myAlliesPosts) => {
+          if(err){
+             res.status(500).json({ errorMessage: 'Something went wrong retrieving your allies\' posts'}
+           );
+           return;
+          }
+          res.status(200).json(myAlliesPosts);
+    });//CLOSE "PostModel.find(...)"
+});//CLOSE "router.GET()"
+
+
+
 module.exports = router;
