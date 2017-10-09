@@ -115,8 +115,19 @@ router.delete('/logout', (req, res, next) => {
     console.log('logged out!');
 });//CLOSE "router.delete('logout')"
 
+
 router.get('/users', (req, res, next) => {
-  UserModel.findBy();
+  UserModel.find()
+  .sort({createdAt: -1})
+  .exec((err, recentUsers) => {
+    if(err){
+      res.status(500).json({ errorMessage: 'DB error' });
+    }
+
+    res.status(200).json(recentUsers);
+  });
 });
+
+
 
 module.exports = router;
