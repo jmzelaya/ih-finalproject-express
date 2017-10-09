@@ -87,7 +87,7 @@ router.delete(('/posts/:postId'), (req, res, next) => {
 
     (err, postFromDb) => {
       if(err) {
-        res.status(500).json({ errorMessage: 'Phone details went wrong' }
+        res.status(500).json({ errorMessage: 'Post details went wrong' }
       );
 
       return;
