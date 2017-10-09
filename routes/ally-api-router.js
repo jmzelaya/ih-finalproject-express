@@ -79,13 +79,28 @@ router.post('/users/allies/:id', (req, res, next) => {
         console.log('after');
         console.log(req.user.allies);
 
-});
+});//CLOSE "router.POST(/users/allies/:id)"
 
 
 
+router.get('/my-allies', (req, res, next) => {
+  if(!req.user){
+    res.status(401).json({ errorMessage: 'User is not logged in' });
+    return;
+  }
 
+  UserModel.find({ allies: req.user._id })
+    .sort({ _id: -1})
+    .exec((err, myAllyResults) => {
+        if(err){
+          res.status(500).json({ errorMessage: 'Something went wrong try again later'}
+        );
+        return;
+        }
+        res.status(200).json(myAllyResults);
 
-
+  });//CLOSE "UserModel.find(...)"
+});//CLOSE "router.GET('/my-allies')"
 
 
 
