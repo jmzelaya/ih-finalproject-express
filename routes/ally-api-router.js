@@ -1,6 +1,7 @@
 const express   = require('express');
 const UserModel = require('../models/user-model');
 const router    = express.Router();
+const PostModel = require('../models/posts-model');
 
 
 
@@ -101,9 +102,6 @@ router.get('/my-allies', (req, res, next) => {
 
   });//CLOSE "UserModel.find(...)"
 });//CLOSE "router.GET('/my-allies')"
-
-
-
 
 
 module.exports = router;

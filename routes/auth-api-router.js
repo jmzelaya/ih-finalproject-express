@@ -128,6 +128,17 @@ router.get('/users', (req, res, next) => {
   });
 });
 
+router.get('/users/:userId', (req, res, next) => {
+  UserModel.findById(
+    req.params.userId,
+  (err, userFromDb) => {
+    if(err) {
+      res.status(500).json({ errorMessage: 'db error'});
+    }
+    res.status(200).json(userFromDb);
+    }
+  );
+});
 
 
 module.exports = router;
