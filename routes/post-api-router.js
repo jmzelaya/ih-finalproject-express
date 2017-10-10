@@ -66,6 +66,7 @@ router.get('/myposts', (req, res, next) => {
 
   PostModel.find({ author: req.user._id })
     .sort({ _id: -1})
+    .populate('author', { encryptedPassword: 0 })
     .exec((err, myPostResults) => {
           if(err){
              res.status(500).json({ errorMessage: 'Something went wrong retrieving your posts'}
@@ -117,7 +118,9 @@ router.delete(('/posts/:postId'), (req, res, next) => {
 
 
 router.get('/posts/ally', (req, res, next) => {
-  PostModel.find({author: allies})
+  //I KNOW THIS ISN'T RIGHT
+  PostModel.find({author: req.user.allies})
+  .populate('author', {encryptedPassword: 0})
     .sort({ _id: -1})
     .exec((err, myAllyPostResults) => {
         if(err){
@@ -125,7 +128,7 @@ router.get('/posts/ally', (req, res, next) => {
         );
         return;
         }
-        res.status(myAllyPostResults);
+        res.status(200).json(myAllyPostResults);
     });
 });
 
