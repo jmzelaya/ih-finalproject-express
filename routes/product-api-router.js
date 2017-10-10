@@ -38,7 +38,6 @@ router.post('/supplies', (req, res, next) => {
     console.log('Succesfully posted!');
 
   });//CLOSE thePost.SAVE(...)
-
 });//CLOSE "router.POST('/supplies')"
 
 // router.get('/supplies', (req, res, next) => {
