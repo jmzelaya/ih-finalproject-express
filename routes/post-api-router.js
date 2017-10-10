@@ -11,14 +11,14 @@ router.post('/posts', (req, res, next) => {
 
   const thePost = new PostModel({
     textContent: req.body.textContent,
-    author: req.user._id,
+    author: req.user,
   });
 
   console.log('mooooo');
-  // req.user.posts.push(thePost._id);
-  console.log("text content -->",req.user.posts);
+  req.user.posts.push(thePost._id);
+  console.log("text content -->", req.body.textContent);
 
-  console.log("author -->", req.user._id);
+  console.log("author -->", req.user);
 
 
   thePost.save((err) => {
@@ -128,6 +128,7 @@ router.get('/posts/ally', (req, res, next) => {
         res.status(myAllyPostResults);
     });
 });
+
 
 
 

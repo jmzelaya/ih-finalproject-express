@@ -33,7 +33,10 @@ const userSchema = new Schema(
       ref: 'User',
       }],
 
-    // posts: [],
+    posts: [{
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    }],
 
     daysSurvived: { type: Number },
 
