@@ -40,9 +40,19 @@ router.post('/supplies', (req, res, next) => {
   });//CLOSE thePost.SAVE(...)
 });//CLOSE "router.POST('/supplies')"
 
-// router.get('/supplies', (req, res, next) => {
-//
-// });//CLOSE "router.GET('/supplies')"
+router.get('/supplies', (req, res, next) => {
+    ProductModel.find()
+    .sort({ timestamps: -1 })
+    .exec((err, recentSupplies) => {
+      if(err) {
+        console.log('error finding supplies');
+        res.status(500).json({ errorMessage: 'There was an issue finding supplies'});
+        return;
+      }
+      console.log('recentSupplies -->');
+      res.status(200).json(recentSupplies);
+    });//CLOSE PostModel.find(...)
+});//CLOSE "router.GET(...)"
 
 router.get('/my-supplies', (req, res, next) => {
   ProductModel.find({ owner: req.user._id })
