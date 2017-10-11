@@ -107,4 +107,16 @@ router.delete(('/supplies/:supplyId'), (req, res, next) => {
   });//CLOSE "PostModel.findById(...)"
 });//CLOSE "router.DELETE(/posts
 
+router.get('/supplies/:supplyId', (req, res, next) => {
+  ProductModel.findById(
+    req.params.supplyId,
+    (err, supplyFromDb) => {
+      if(err) {
+        res.status(500).json({errorMessage: 'Something went wrong try again later.'});
+      }
+      res.status(200).json(supplyFromDb);
+    }
+  );
+});
+
 module.exports = router;
