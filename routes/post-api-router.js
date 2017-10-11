@@ -36,8 +36,9 @@ router.post('/posts', (req, res, next) => {
     }
 
 
+    thePost.author.encryptedPassword = undefined;
     res.status(200).json(thePost);
-    console.log('Succesfully posted!');
+    console.log('Succesfully posted!', thePost);
 
   });//CLOSE thePost.SAVE(...)
 });//CLOSE "router.POST(...)"
@@ -119,9 +120,10 @@ router.delete(('/posts/:postId'), (req, res, next) => {
 
 router.get('/posts/ally', (req, res, next) => {
   //I KNOW THIS ISN'T RIGHT
+  console.log('testinghere -->', req.user.allies);
   PostModel.find({author: req.user.allies})
   .populate('author', {encryptedPassword: 0})
-    .sort({ _id: -1})
+    .sort({ createdAt: -1})
     .exec((err, myAllyPostResults) => {
         if(err){
           res.status(500).json({ errorMessage: 'Something went wrong try again later'}

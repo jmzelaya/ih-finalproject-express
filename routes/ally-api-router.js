@@ -20,9 +20,6 @@ router.post('/users/allies/:id', (req, res, next) => {
         allyFromDb.allies.push(req.user._id);
         console.log('afterrrr');
         console.log(allyFromDb.allies);
-        allyFromDb.set({
-          allies: [req.user._id]
-        });
 
         allyFromDb.save((err) => {
           if(allyFromDb.errors) {
@@ -39,46 +36,36 @@ router.post('/users/allies/:id', (req, res, next) => {
           return;
         }
 
-        UserModel.findById( req.user.id, (err, myAllyFromDb) =>{
-            if(err){
-              res.status(500).json({ errorMessage: 'Ally database error' });
-            }
-              req.user.allies.push(req.params.id);
 
-              myAllyFromDb.set({
-                allies: [req.params.id]
-              });
+        req.user.allies.push(req.params.id);
 
-              myAllyFromDb.save((err) => {
-                if(myAllyFromDb.errors){
-                  res.status(400).json({
-                    errorMessage: 'my ally validating error',
-                    validationErrors: myAllyFromDb.erros
-                  });
+        req.user.save((err) => {
+          if(req.user.errors){
+            res.status(400).json({
+              errorMessage: 'my ally validating error',
+              validationErrors: myAllyFromDb.erros
+            });
 
-                  return;
-                }
+            return;
+          }
 
-                if(err) {
-                  console.log("2nd save error", err);
-                  res.status(500).json({ errorMessage: 'my ally save went wrong' });
-                  return;
-                }
-                res.status(200).json(myAllyFromDb);
-              });
-
+          if(err) {
+            console.log("2nd save error", err);
+            res.status(500).json({ errorMessage: 'my ally save went wrong' });
+            return;
+          }
+          res.status(200).json(req.user);
         });
-
   });
 
         //Take the ally's id
         // req.params.id
         //put inside our ally's array
-        console.log('b5');
-        console.log(req.user.allies);
-        // req.user.allies.push(req.params.id);
-        console.log('after');
-        console.log(req.user.allies);
+        // console.log('b5');
+        // console.log(req.user.allies);
+        // // req.user.allies.push(req.params.id);
+        // console.log('after');
+        // console.log(req.user.allies);
 
 });//CLOSE "router.POST(/users/allies/:id)"
 
