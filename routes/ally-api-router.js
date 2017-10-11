@@ -77,6 +77,7 @@ router.get('/my-allies', (req, res, next) => {
     return;
   }
 
+
   UserModel.find({ allies: req.user._id })
     .sort({ _id: -1})
     .exec((err, myAllyResults) => {
@@ -89,6 +90,19 @@ router.get('/my-allies', (req, res, next) => {
 
   });//CLOSE "UserModel.find(...)"
 });//CLOSE "router.GET('/my-allies')"
+
+router.get('/users/:id', (req, res, next) => {
+  UserModel.findById( req.params.id )
+    .exec((err, allyFromDb) => {
+      if (err) {
+        console.log('mayuybbeee??');
+        res.status(500).json({errorMessage: 'DB Error'});
+        return;
+        }
+        res.status(200).json(allyFromDb);
+
+    });
+});
 
 
 module.exports = router;
