@@ -51,9 +51,16 @@ router.post('/process-signup', (req, res, next) => {
                  return;
               }
 
-              theUser.encryptedPassword = undefined;
-              res.status(200).json( theUser );
-              console.log("User successfully signed up");
+              req.login(theUser, (err) => {
+                if (err) {
+                  res.status(500).json({ errorMessage: 'error logging in'});
+                  return;
+                }
+                theUser.encryptedPassword = undefined;
+                res.status(200).json( theUser );
+                console.log("User successfully signed up");
+              });
+
 
           });//CLOSE "theUser.save(...)"
 
@@ -94,8 +101,9 @@ router.post('/process-login', (req, res, next) => {
 
 router.get('/checklogin', (req, res, next) => {
   let amILoggedIn = false;
-
+console.log(req.user);
   if (req.user){
+
       req.user.encryptedPassword = undefined;
       amILoggedIn = true;
   }
