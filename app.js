@@ -10,6 +10,8 @@ const cors         = require('cors');
 const passport     = require('passport');
 const session      = require('express-session');
 
+require('dotenv').config();
+
 require('./config/passport-config');
 
 mongoose.connect('mongodb://localhost/finalproject-express');

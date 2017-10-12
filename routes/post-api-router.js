@@ -2,46 +2,62 @@ const express   = require('express');
 const PostModel = require('../models/posts-model');
 const UserModel = require('../models/user-model');
 const router    = express.Router();
+const multer    = require('multer');
 
 
-router.post('/posts', (req, res, next) => {
-  if(!req.user){
-    res.status(401).json({ errorMessage: 'User not logged in' });
-  }
 
-  const thePost = new PostModel({
-    textContent: req.body.textContent,
-    author: req.user,
-  });
+const myUploader =
+  multer(
+    {
+      dest:__dirname + '/../public/uploads/'
+    }
+  );
 
-  console.log('mooooo');
-  req.user.posts.push(thePost._id);
-  console.log("text content -->", req.body.textContent);
-
-  console.log("author -->", req.user);
-
-
-  thePost.save((err) => {
-    if(thePost.errors) {
-       res.status(400).json({
-         errorMessage: 'Error validating post',
-         validationErrors: thePost.errors
-       });
-       return;
+router.post(
+  '/posts',
+  myUploader.single('postImage'),
+  (req, res, next) => {
+    if(!req.user){
+      res.status(401).json({ errorMessage: 'User not logged in' });
     }
 
-    if(err){
-       console.log('ERROR POSTING THE POST', err);
-       res.status(500).json({ errorMessage: 'Something went wrong try again later'});
+    const thePost = new PostModel({
+      textContent: req.body.textContent,
+      author: req.user,
+    });
+
+    if(req.file) {
+      thePost.image = '/uploads/' + req.file.filename;
     }
 
+    console.log('mooooo');
+    req.user.posts.push(thePost._id);
+    console.log("text content -->", req.body.textContent);
 
-    thePost.author.encryptedPassword = undefined;
-    res.status(200).json(thePost);
-    console.log('Succesfully posted!', thePost);
+    console.log("author -->", req.user);
 
-  });//CLOSE thePost.SAVE(...)
-});//CLOSE "router.POST(...)"
+
+    thePost.save((err) => {
+      if(thePost.errors) {
+         res.status(400).json({
+           errorMessage: 'Error validating post',
+           validationErrors: thePost.errors
+         });
+         return;
+      }
+
+      if(err){
+         console.log('ERROR POSTING THE POST', err);
+         res.status(500).json({ errorMessage: 'Something went wrong try again later'});
+      }
+
+
+      thePost.author.encryptedPassword = undefined;
+      res.status(200).json(thePost);
+      console.log('Succesfully posted!', thePost);
+
+    });//CLOSE thePost.SAVE(...)
+  });//CLOSE "router.POST(...)"
 
 //This router gets ALL of the posts vvv
 router.get('/posts', (req, res, next) => {
