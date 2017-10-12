@@ -14,7 +14,7 @@ require('dotenv').config();
 
 require('./config/passport-config');
 
-mongoose.connect('mongodb://localhost/finalproject-express');
+mongoose.connect(process.env.MONGODB_URI);
 
 const app = express();
 
@@ -49,8 +49,8 @@ app.use(passport.session());
 
 //========VV====== ROUTES GO HERE ========VV====================================
 
-const index = require('./routes/index');
-app.use('/', index);
+// const index = require('./routes/index');
+// app.use('/', index);
 
 const myAuthRoutes = require('./routes/auth-api-router');
 app.use('/api', myAuthRoutes);
