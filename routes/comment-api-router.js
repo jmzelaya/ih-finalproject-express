@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 // router.post('/posts/', (req, res, next) => {
-//   Post.Model.
+//   Post.Model.find
 // });
 
 

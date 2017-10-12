@@ -135,8 +135,7 @@ router.delete(('/posts/:postId'), (req, res, next) => {
 
 
 router.get('/posts/ally', (req, res, next) => {
-  //I KNOW THIS ISN'T RIGHT
-  console.log('testinghere -->', req.user.allies);
+  // console.log('testinghere -->', req.user.allies);
   PostModel.find({author: req.user.allies})
   .populate('author', {encryptedPassword: 0})
     .sort({ createdAt: -1})
