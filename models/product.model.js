@@ -19,9 +19,8 @@ const productSchema = new Schema (
       required: [true, 'You must input a trade value']
     },
 
-    tag: {
-      type: String,
-      required: [true, 'You must include one tag for your product']
+    supplyImage: {
+      type:String
     },
 
     owner: {

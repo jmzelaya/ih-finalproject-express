@@ -1,9 +1,19 @@
 const express       = require ('express');
 const ProductModel  = require('../models/product.model');
 const router        = express.Router();
+const multer    = require('multer');
 
 
-router.post('/supplies', (req, res, next) => {
+const myUploader =
+  multer(
+    {
+      dest:__dirname + '/../public/uploads/'
+    }
+  );
+
+router.post('/supplies',
+  myUploader.single('supplyImage'),
+  (req, res, next) => {
   if(!req.user){
     res.status(401).json({ errorMessage: 'User not logged in' });
   }
@@ -12,10 +22,13 @@ router.post('/supplies', (req, res, next) => {
     productName         : req.body.productName,
     productDescription  : req.body.productDescription,
     productValue        : req.body.productValue,
-    tag                 : req.body.productTag,
     owner               : req.user._id
 
   });
+
+  if(req.file) {
+  theSupply.image = '/uploads/' + req.file.filename;
+  }
 
   req.user.supplies.push(theSupply._id);
 
